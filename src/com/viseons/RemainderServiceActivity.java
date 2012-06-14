@@ -14,6 +14,8 @@ import android.widget.TextView;
 public class RemainderServiceActivity extends Activity {
     /** Called when the activity is first created. */
 	
+	public static boolean isForeGround = true;
+	
 	BroadcastReceiver locationBroadcast = new BroadcastReceiver() {
 		
 		@Override
@@ -55,6 +57,7 @@ public class RemainderServiceActivity extends Activity {
     @Override
     protected void onResume() {
     	
+    	isForeGround = true;
     	registerReceiver(locationBroadcast, locationFilter);
     	super.onResume();
     }
@@ -62,6 +65,7 @@ public class RemainderServiceActivity extends Activity {
     @Override
     protected void onPause() {
     	
+    	isForeGround = false;
     	unregisterReceiver(locationBroadcast);
     	super.onPause();
     }

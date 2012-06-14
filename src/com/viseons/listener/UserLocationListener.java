@@ -1,5 +1,6 @@
 package com.viseons.listener;
 
+import android.R;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,6 +11,7 @@ import android.location.LocationListener;
 import android.os.Bundle;
 
 import com.viseons.MapsActivity;
+import com.viseons.RemainderServiceActivity;
 import com.viseons.content.ListManager;
 import com.viseons.content.StoreList;
 import com.viseons.content.StoreManager;
@@ -25,11 +27,32 @@ public class UserLocationListener implements LocationListener {
 	@Override
 	public void onLocationChanged(Location location) {
 		
-		Intent i = new Intent("com.viseons.action.LOCATION");
-		i.putExtra("latitude", location.getLatitude());
-		i.putExtra("longitude", location.getLongitude());
-		context.sendBroadcast(i);
+		if(RemainderServiceActivity.isForeGround){
+			Intent i = new Intent("com.viseons.action.LOCATION");
+			i.putExtra("latitude", location.getLatitude());
+			i.putExtra("longitude", location.getLongitude());
+			context.sendBroadcast(i);
+		}
 		
+		else{
+			NotificationManager nmgr = (NotificationManager)context.getSystemService(context.NOTIFICATION_SERVICE);
+			CharSequence tickerText = "Remainder-Ticker";
+			long when = System.currentTimeMillis();
+
+			Notification notification = new Notification(R.drawable.stat_notify_sync, tickerText, when);
+			
+			CharSequence contentTitle = "Remainder";
+			CharSequence contentText = "You may want to buy items!, You are at "+location.getLatitude()+","+location.getLongitude();
+			
+			//Show maps activity with the stores located
+			Intent notificationIntent = new Intent(context, MapsActivity.class);
+			PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+
+			notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+			nmgr.notify(1, notification);
+
+		}
+			
 		ListManager lm = ListManager.getInstance();
 		UserList ul = lm.getUserList();
 		if(!ul.isEmpty()){
