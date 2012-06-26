@@ -26,8 +26,8 @@
         
         <activity
             android:name=".MapsActivity"
-            android:label="maps_show" >
-            
+            android:label="maps_show" 
+            android:apiKey="0EQlsQRSuPETftyXeWAh93sVZ_4oTffbVhiu6zw">
         </activity>
 
         <uses-library android:name="com.google.android.maps" />

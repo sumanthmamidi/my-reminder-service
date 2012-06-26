@@ -1,5 +1,14 @@
 package com.viseons;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -41,8 +50,25 @@ public class RemainderServiceActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				Intent i_maps = new Intent(RemainderServiceActivity.this, MapsActivity.class);
-				startActivity(i_maps);
+				HttpGet get = new HttpGet("http://www.google.com");
+				HttpClient client = new DefaultHttpClient();
+				try {
+			        HttpResponse response = client.execute(get);
+			                    // What if I want to cancel now??
+			        HttpEntity entity = response.getEntity();
+			        
+						InputStream inputStream = entity.getContent();
+					} catch (IllegalStateException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			    
+
+				//Intent i_maps = new Intent(RemainderServiceActivity.this, MapsActivity.class);
+				//startActivity(i_maps);
 			}
 		}
 		);

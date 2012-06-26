@@ -46,6 +46,10 @@ public class UserLocationListener implements LocationListener {
 			
 			//Show maps activity with the stores located
 			Intent notificationIntent = new Intent(context, MapsActivity.class);
+			String[] coords = new String[10];
+			
+			coords[0] = Double.toString(location.getLatitude())+","+Double.toString(location.getLongitude());
+			notificationIntent.putExtra("coords", coords);
 			PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
 			notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
