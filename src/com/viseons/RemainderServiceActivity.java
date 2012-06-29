@@ -9,6 +9,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.viseons.service.RemainderService;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -50,31 +52,26 @@ public class RemainderServiceActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				HttpGet get = new HttpGet("http://www.google.com");
-				HttpClient client = new DefaultHttpClient();
-				try {
-			        HttpResponse response = client.execute(get);
-			                    // What if I want to cancel now??
-			        HttpEntity entity = response.getEntity();
-			        
-						InputStream inputStream = entity.getContent();
-					} catch (IllegalStateException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-			    
 
-				//Intent i_maps = new Intent(RemainderServiceActivity.this, MapsActivity.class);
-				//startActivity(i_maps);
+				Intent i_maps = new Intent(RemainderServiceActivity.this, MapsActivity.class);
+				startActivity(i_maps);
 			}
 		}
 		);
         
         Button btn_start_service= (Button) findViewById(R.id.main_start_service);
         btn_start_service.setOnClickListener(new ServiceStarter(this));
+        
+        Button btn_stop_service= (Button) findViewById(R.id.main_stop_service);
+        btn_stop_service.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(RemainderServiceActivity.this, RemainderService.class);
+				stopService(i);
+			}
+		});
+        
         
         locationFilter = new IntentFilter("com.viseons.action.LOCATION");
         

@@ -2,7 +2,7 @@ package com.viseons;
 
 import java.util.List;
 
-import android.R;
+import com.viseons.R;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -36,31 +36,34 @@ public class MapsActivity extends  MapActivity{
 		
 		Intent inputIntent = getIntent();
 		Bundle bundle = inputIntent.getExtras();
-		String[] coords = (String[])bundle.get("coords");
-		
-		List<Overlay> list = m.getOverlays();
-		
-		Drawable drawable = this.getResources().getDrawable(R.drawable.ic_dialog_map);
-		 MapItemOverlay itemizedoverlay = new MapItemOverlay(drawable,this);
-		
-		for(String coord:coords){
+		if(bundle!=null){
+			String[] coords = (String[])bundle.get("coords");
 			
-			if(coord==null){
-				continue;
+			List<Overlay> list = m.getOverlays();
+			
+			Drawable drawable = this.getResources().getDrawable(R.drawable.ic_launcher);
+			 MapItemOverlay itemizedoverlay = new MapItemOverlay(drawable,this);
+			
+			for(String coord:coords){
+				
+				if(coord==null){
+					continue;
+				}
+				String[] coordSplit = coord.split(",");
+				int lat =  (int) (Double.parseDouble(coordSplit[0])*1E6);
+				int lon = (int) (Double.parseDouble(coordSplit[1])*1E6);
+				
+				GeoPoint point = new GeoPoint(lat,lon);
+				 OverlayItem overlayitem = new OverlayItem(point, "You are here", lat+","+lon);
+				 itemizedoverlay.addOverlay(overlayitem);
+				 
+				 mc.animateTo(point);
+				
 			}
-			String[] coordSplit = coord.split(",");
-			int lat =  (int) (Double.parseDouble(coordSplit[0])*1E6);
-			int lon = (int) (Double.parseDouble(coordSplit[1])*1E6);
 			
-			GeoPoint point = new GeoPoint(lat,lon);
-			 OverlayItem overlayitem = new OverlayItem(point, "You are here", "I'm in Louisiana!");
-			 itemizedoverlay.addOverlay(overlayitem);
-			 
-			 mc.animateTo(point);
-			
+			list.add(itemizedoverlay);
 		}
 		
-		list.add(itemizedoverlay);
 		
 		m.setBuiltInZoomControls(true);
 		mc.setZoom(15);

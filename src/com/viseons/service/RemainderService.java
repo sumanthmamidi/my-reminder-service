@@ -1,18 +1,20 @@
 package com.viseons.service;
 
-import com.viseons.listener.UserLocationListener;
-
 import android.app.Service;
 import android.content.Intent;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.IBinder;
+
+import com.viseons.listener.UserLocationListener;
 
 public class RemainderService extends Service{
 
 	public static final String LOCATION_SERVICE_HANDLE = "location_check";
 	public static final int LOCATION_SERVICE_MINTIME = 60000;
 	public static final int LOCATION_SERVICE_MINDISTANCE = 1;
-
+	public static LocationListener locationListener;
+	
 	@Override
 	public void onCreate() {
 		// TODO Auto-generated method stub
@@ -24,7 +26,9 @@ public class RemainderService extends Service{
 		if(lm!=null){
 			boolean hasNetwork = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 			if(hasNetwork){
-				lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_SERVICE_MINTIME, LOCATION_SERVICE_MINDISTANCE, new UserLocationListener(this));
+				locationListener = new UserLocationListener(this);
+				lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_SERVICE_MINTIME, LOCATION_SERVICE_MINDISTANCE, locationListener);
+				
 			}
 		}
 	}
@@ -38,6 +42,18 @@ public class RemainderService extends Service{
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		
 		return super.onStartCommand(intent, flags, startId);
+	}
+	@Override
+	public void onDestroy() {
+		LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+		if(locationListener!=null){
+			System.out.println("Unregistering Location updates");
+			lm.removeUpdates(locationListener);
+		}
+		System.out.println("Stopping RemainderService");
+		
+		// TODO Auto-generated method stub
+		super.onDestroy();
 	}
 
 }

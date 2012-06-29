@@ -36,7 +36,7 @@ public class UserLocationListener implements LocationListener {
 		
 		else{
 			NotificationManager nmgr = (NotificationManager)context.getSystemService(context.NOTIFICATION_SERVICE);
-			CharSequence tickerText = "Remainder-Ticker";
+			CharSequence tickerText = "Remainder";
 			long when = System.currentTimeMillis();
 
 			Notification notification = new Notification(R.drawable.stat_notify_sync, tickerText, when);
@@ -53,6 +53,7 @@ public class UserLocationListener implements LocationListener {
 			PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
 			notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+			notification.defaults = Notification.DEFAULT_ALL;
 			nmgr.notify(1, notification);
 
 		}
@@ -76,7 +77,7 @@ public class UserLocationListener implements LocationListener {
 				
 				//Show maps activity with the stores located
 				Intent notificationIntent = new Intent(context, MapsActivity.class);
-				PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+				PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
 				notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
 				
