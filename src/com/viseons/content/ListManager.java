@@ -17,6 +17,9 @@ public class ListManager {
 		
 		if(userlist==null){
 			userlist = new UserList();
+			
+			IListItem item = new ListItem("milk");
+			userlist.add(item);
 		}
 		
 		return userlist;
