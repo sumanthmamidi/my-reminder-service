@@ -25,7 +25,7 @@ import com.viseons.stores.IStoreManager;
 public class GooglePlaces implements IStoreManager{
 
 	public static final String PLACES_API_KEY = "AIzaSyCUx9-f6JEehYGD73sf7zIZnsGqpOZlYls";
-	public static final String PLACES_URI = "https://maps.googleapis.com/maps/api/place/textsearch/json?";
+	public static final String PLACES_URI = "https://maps.googleapis.com/maps/api/place/textsearch/json";
 	@Override
 	public StoreList getStores(String item, Location location){
 		

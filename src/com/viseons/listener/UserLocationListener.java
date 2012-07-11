@@ -51,10 +51,10 @@ public class UserLocationListener implements LocationListener {
 					CharSequence tickerText = "Remainder-Ticker";
 					long when = System.currentTimeMillis();
 	
-					Notification notification = new Notification(-1, tickerText, when);
-					
+					Notification notification = new Notification(R.drawable.stat_notify_sync, tickerText, when);
+								
 					CharSequence contentTitle = "Remainder";
-					CharSequence contentText = "You may want to buy items!";
+					CharSequence contentText = "You may want to buy items!" ;
 					
 					//Show maps activity with the stores located
 					Intent notificationIntent = new Intent(context, MapsActivity.class);
